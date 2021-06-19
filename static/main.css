@@ -1,0 +1,25 @@
+.screenshot {
+    max-height: 33vh;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.galleryBox {
+    height: 25vw;
+    width: 20vw;
+}
+
+.galleryImage {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 20vw;
+    width: 20vw;
+}
+
+.gallerySubtitle {
+    text-align: center;
+}
