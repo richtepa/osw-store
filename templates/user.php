@@ -1,3 +1,10 @@
+<style>
+    .gallery{
+        grid-template-rows: 1fr;
+        grid-template-columns: repeat(100, 20vw);
+    }
+</style>
+
 <div class="content">
     <h1><?php echo $username; ?></h1>
     <h2>Watchfaces</h2>

@@ -1,4 +1,5 @@
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <link rel="stylesheet" href="/static/main.css">
     <script src=/static/script.js></script>
@@ -10,8 +11,9 @@
             <div id="logo">OSW-Store</div>
         </a>
         <?php if(empty($_SESSION["uid"])){ ?>
-        <div id="signin" onclick="toggleSignInUp()">Sign In/Up</div>
+        <div id="signin" onclick="toggleSignInUp()" style="margin-left: auto">Sign In/Up</div>
         <?php } else { ?>
+        <div id="upload" onclick="toggleUpload()">Upload</div>
         <div id="signin"><a class="invisibleLink" href="/signOut/">Sign Out</a></div>
         <?php } ?>
     </div>
@@ -25,7 +27,7 @@
                         <h3>Sign In</h3>
                         <table>
                             <tr>
-                                <td class="inputDescription">Username or Email Adress</td>
+                                <td class="inputDescription">Username or Email</td>
                                 <td><input name="user" type="text"></td>
                             </tr>
                             <tr>
@@ -49,7 +51,7 @@
                     <form action="/resetPassword/" method="post">
                         <table>
                             <tr>
-                                <td class="inputDescription">Email Adress</td>
+                                <td class="inputDescription">Email</td>
                                 <td><input name="email" type="text"></td>
                             </tr>
                             <tr>
@@ -65,7 +67,7 @@
                     <form action="/signUp/" method="post">
                         <table>
                             <tr>
-                                <td class="inputDescription">Email Adress</td>
+                                <td class="inputDescription">Email</td>
                                 <td><input name="email" type="email"></td>
                             </tr>
                             <tr>
@@ -84,6 +86,35 @@
                                 <td></td>
                                 <td><button name="submit" type="submit">Sign Up</button></td>
                             </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="upload-dialog" class="dialog invisible">
+            <div class="dialogBackground" onclick="toggleUpload()"></div>
+            <div class="dialogForeground">
+                <div class="dialogSection" style="width:calc(100% - 4vw);height:calc(100% - 4vw);">
+                    <h3>Upload Watchface:</h3>
+                    <form action="/watchface/upload/" method="post" enctype="multipart/form-data">
+                        <table>
+                            <tr>
+                                <td>Name</td>
+                                <td><input name="title" type="text"></td>
+                            </tr>
+                            <tr>
+                                <td>Description</td>
+                                <td><textarea name="description" rows="3"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td>Screenshot</td>
+                                <td><input type="file" accept="image/jpg,image/png, image/jpeg" name="screenshot"></td>
+                            </tr>
+                            <tr>
+                                <td>Code (.cpp)</td>
+                                <td><input type="file" accept=".cpp" name="code"></td>
+                            </tr>
+                            <tr><td></td><td><button name="submit" type="submit">Upload</button></td></tr>
                         </table>
                     </form>
                 </div>

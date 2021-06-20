@@ -2,7 +2,7 @@
 
 session_start();
 
-$uid = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '',$_SESSION["uid"]);
+$uid = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '',$_SESSION["uid"]));
 if(empty($uid)){
     header("Location: /?loginNeeded");
 	exit();
@@ -76,7 +76,7 @@ if(!empty($_FILES["code"]["name"])){
     }
 }
 if(!empty($_POST["description"])){
-    htmlspecialchars($_POST["description"], ENT_QUOTES, 'UTF-8');
+    $description = htmlspecialchars($_POST["description"], ENT_QUOTES, 'UTF-8');
     $sql = $conn->prepare("UPDATE `watchface` SET `description` = :description WHERE `title` = :title AND `uid` = :uid");
     $sql->bindValue(":description", $description, PDO::PARAM_STR);
     $sql->bindValue(":uid", $uid, PDO::PARAM_STR);

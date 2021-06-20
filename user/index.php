@@ -17,7 +17,8 @@ $sql->execute();
 
 //no User
 if($sql->rowCount() < 1){
-	require "../templates/noUser.php";
+	header("Location: /?noUser");
+    exit();
 } else {
     if($row = $sql->fetch(PDO::FETCH_ASSOC)){
 	   require "../templates/user.php";

@@ -1,19 +1,6 @@
-.screenshot {
-    max-height: 33vh;
+.screenshot{
+    height: 500px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 body {
@@ -23,7 +10,7 @@ body {
 
 .header {
     z-index: 1000;
-    background-color: 3A405A;
+    background-color: #3A405A;
     color: white;
     position: fixed;
     top: 0px;
@@ -47,24 +34,39 @@ a.invisibleLink {
     margin-left: 7.5vh;
 }
 
+#upload,
 #signin {
     cursor: pointer;
     height: 5.5vh;
     line-height: 5.5vh;
     font-size: 2.5vh;
     padding: 1vh;
+}
+
+#upload {
     margin-left: auto;
+    margin-right: 5vh;
+}
+
+#signin {
     margin-right: 7.5vh;
 }
 
+
 .content {
     margin-top: 7.5vh;
+    padding-top: 2.5vh;
     #background-color: #f0f0f0;
+}
+
+.galleryWrapper{
+    overflow: scroll;
+    width: 100vw;
 }
 
 .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 2vw;
     padding: 2vw;
 }
@@ -90,7 +92,7 @@ a.invisibleLink {
 
 .title {
     color: black;
-    font-size: 3vh;
+    font-size: 2.5vh;
     text-align: left;
     margin: 1vh;
 }
@@ -102,12 +104,17 @@ a.invisibleLink {
     color: gray;
 }
 
-.heartLink {
+.likes{
+    height: 5vh;
+    line-height: 5vh;
+    margin: 2vh;
     margin-left: auto;
+    font-size: 2.5vh;
 }
 
 .heart {
     margin: 2vh;
+    margin-left: 0px;
     height: 5vh;
     fill: none;
     stroke: #BC4749;
@@ -162,7 +169,7 @@ a.invisibleLink {
     flex-direction: column;
 }
 
-h3 {
+h1, h2, h3 {
     width: 100%;
     text-align: center;
 }
@@ -179,4 +186,92 @@ button {
 
 .line {
     position: absolute;
+}
+
+.paginator{
+    height: 7.5vh;
+    line-height: 7.5vh;
+    position: absolute;
+    margin-left: 50%;
+    transform: translate(-50%);
+}
+
+.page{
+    color: white;
+    background-color: #3A405A;
+    padding: 1vh;
+    border-radius: 1vh;
+}
+
+a > .page{
+    color: black;
+    background-color: transparent;
+    border: 1px solid black;
+}
+
+@media screen and (max-width: 1440px) {
+    .gallery {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .gallery {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #logo {
+        font-size: 2.5vh;
+        margin-left: 1vh;
+    }
+
+    #upload,
+    #signin {
+        font-size: 1.5vh;
+        margin-right: 2vh;
+    }
+
+    .dialogForeground {
+        left: 10%;
+        width: 80%;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .heart {
+        stroke-width: 0.3vh;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .dialogForeground {
+        height: auto;
+        top: 10%;
+    }
+
+    .line {
+        position: initial;
+        width: auto !important;
+        border-bottom: 3px solid gray !important;
+        margin: 5%;
+    }
+
+    .dialogSection {
+        position: initial;
+        width: calc(80% - 2vw);
+        margin-left: 10%;
+        display: block;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .heart {
+        stroke-width: 0.15vh;
+    }
 }

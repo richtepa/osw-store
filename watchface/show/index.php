@@ -27,7 +27,8 @@ $sql->bindValue(":title", $title, PDO::PARAM_STR);
 $sql->execute();
 
 if($sql->rowCount() < 1){
-	require "../../templates/noWatchface.php";
+	header("Location: /?noWatchface");
+    exit();
 } else {
     if($row = $sql->fetch(PDO::FETCH_ASSOC)){
 	   require "../../templates/watchface.php";

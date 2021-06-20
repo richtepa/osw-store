@@ -22,8 +22,8 @@ if($sql->rowCount() > 0){
         } else {
             $verify = generateRandomString(16);
             
-            $sql = $conn->prepare("UPDATE `user` SET `verify` = 'passwordReset-:verify' WHERE `email` = :email;");
-            $sql->bindValue(":verify", $verify, PDO::PARAM_STR);
+            $sql = $conn->prepare("UPDATE `user` SET `verify` = :verify WHERE `email` = :email;");
+            $sql->bindValue(":verify", "passwordReset-".$verify, PDO::PARAM_STR);
             $sql->bindValue(":email", $email, PDO::PARAM_STR);
             $sql->execute();
             
