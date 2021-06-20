@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-$uid = $_SESSION["uid"];
+$uid = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '',$_SESSION["uid"]));
 
 require "backend/db.php";
 

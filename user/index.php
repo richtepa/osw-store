@@ -1,23 +1,25 @@
 <?php
 
 session_start();
-$uid = $_SESSION["uid"];
-$username = explode("/", $_GET["path"])[0];
+$uid = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '',$_SESSION["uid"]));
+$username = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '',explode("/", $_GET["path"])[0]));
 
 
 require "../templates/header.php";
 
 
 require "../backend/db.php";
-$sql = "SELECT * FROM user WHERE uid='$username'";
-$result = mysqli_query($conn, $sql);
-$num_rows = mysqli_num_rows($result);
+
+
+$sql = $conn->prepare("SELECT * FROM user WHERE uid=:username");
+$sql->bindValue(":username", $username, PDO::PARAM_STR);
+$sql->execute();
 
 //no User
-if($num_rows < 1){
+if($sql->rowCount() < 1){
 	require "../templates/noUser.php";
 } else {
-    if($row = mysqli_fetch_assoc($result)){
+    if($row = $sql->fetch(PDO::FETCH_ASSOC)){
 	   require "../templates/user.php";
     }
 }

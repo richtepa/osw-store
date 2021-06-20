@@ -19,14 +19,14 @@ if(!checkMail($email)){
 
 require "../backend/db.php";
 
-$uid = strtolower($_POST["uid"]);
+$uid = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '',$_POST["uid"]));
 $pwd = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
 
-$sql = "SELECT * FROM user WHERE email='$email'";
-$result = mysqli_query($conn, $sql);
-$num_rows = mysqli_num_rows($result);
-if($num_rows > 0){
-    if($row = mysqli_fetch_assoc($result)){
+$sql = $conn->prepare("SELECT * FROM user WHERE email=:email");
+$sql->bindValue(":email", $email, PDO::PARAM_STR);
+$sql->execute();
+if($sql->rowCount() > 0){
+    if($row = $sql->fetch(PDO::FETCH_ASSOC)){
         if(password_verify($_POST["pwd"], $row["pwd"])){
             if($row["verify"] == ""){
                 $_SESSION["uid"] = $row["uid"];
@@ -44,11 +44,11 @@ if($num_rows > 0){
     }
 }
 
-$sql = "SELECT * FROM user WHERE uid='$uid'";
-$result = mysqli_query($conn, $sql);
-$num_rows = mysqli_num_rows($result);
-if($num_rows > 0){
-    if($row = mysqli_fetch_assoc($result)){
+$sql = $conn->prepare("SELECT * FROM user WHERE uid=:uid");
+$sql->bindValue(":uid", $uid, PDO::PARAM_STR);
+$sql->execute();
+if($sql->rowCount() > 0){
+    if($row = $sql->fetch(PDO::FETCH_ASSOC)){
         if(password_verify($_POST["pwd"], $row["pwd"])){
             if($row["verify"] == ""){
                 $_SESSION["uid"] =  $row["uid"];
@@ -68,8 +68,12 @@ if($num_rows > 0){
 
 
 $verify = generateRandomString(16);
-$sql = "INSERT INTO `user` (`id`, `uid`, `email`, `pwd`, `verify`, `voted`) VALUES (NULL, '$uid', '$email', '$pwd', 'register-$verify', '[]');";
-$conn->query($sql);
+$sql = $conn->prepare("INSERT INTO `user` (`id`, `uid`, `email`, `pwd`, `verify`, `voted`) VALUES (NULL, :uid, :email, :pwd, :verify, '[]');");
+$sql->bindValue(":uid", $uid, PDO::PARAM_STR);
+$sql->bindValue(":email", $email, PDO::PARAM_STR);
+$sql->bindValue(":pwd", $pwd, PDO::PARAM_STR);
+$sql->bindValue(":verify", "register-".$verify, PDO::PARAM_STR);
+$sql->execute();
 
 $link = "https://" . $config["domain"] . "/verify?email=$email&code=$verify";
 $subject = "Registration at ${config['domain']}";
@@ -84,7 +88,6 @@ if (!$success) {
     $errorMessage = error_get_last()['message'];
 }
 
-//echo $sql;
 
 $_SESSION["uid"] = $uid;
 header("Location: /?ok");

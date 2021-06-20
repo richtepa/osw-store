@@ -5,15 +5,15 @@ if(empty($_GET["page"])){
 } else {
     $page = $_GET["page"];
 }
-$start = ($page-1)*$limit;    
-
-
-$galleryElements = "SELECT * FROM watchface ORDER BY `votes` DESC LIMIT $start, $limit";
+$start = ($page-1)*$limit;
+$galleryElements = $conn->prepare("SELECT * FROM watchface ORDER BY `votes` DESC LIMIT :start, :limit");
+$galleryElements->bindValue(":start", $start, PDO::PARAM_INT);
+$galleryElements->bindValue(":limit", $limit, PDO::PARAM_INT);
+$galleryElements->execute();
 require "watchfaceGallery.php";
-    
-$sql = "SELECT * FROM watchface";
-$result = mysqli_query($conn, $sql);
-$num_rows = mysqli_num_rows($result);
+$sql = $conn->prepare($sql = "SELECT id FROM watchface");
+$sql->execute();
+$num_rows = $sql->rowCount();
 $maxPage = ceil($num_rows / $limit);
 ?>
 <div class="paginator">

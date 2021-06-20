@@ -24,7 +24,7 @@
                 <button name="submit" type="submit">SignUp</button>
             </form>
         <?php } else { ?>
-            <a href="/signOut/"><button>SignOut</button></a>
-        <?php }?>
+            <a href="/signOut/"><button>SignOut - <?php echo $_SESSION["uid"] ?></button></a>
+        <?php } ?>
     </div>
     <hr>

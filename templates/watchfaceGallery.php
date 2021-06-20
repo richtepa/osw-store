@@ -4,16 +4,16 @@
 if(empty($uid)){
     $voted = [];
 } else {
-    $sql = "SELECT * FROM user WHERE uid='$uid'";
-    $result = mysqli_query($conn, $sql);
-    $num_rows = mysqli_num_rows($result);
-    if($row = mysqli_fetch_assoc($result)){
+    $sql = $conn->prepare("SELECT * FROM user WHERE uid=:uid");
+    $sql->bindValue(":uid", $uid, PDO::PARAM_STR);
+    $sql->execute();
+    if($row = $sql->fetch(PDO::FETCH_ASSOC)){
         $voted = json_decode($row["voted"], true);
     }   
 }
-    
-$result = mysqli_query($conn, $galleryElements);
-while($row = mysqli_fetch_assoc($result)) {
+
+
+while($row = $galleryElements->fetch(PDO::FETCH_ASSOC)) {
     $v = in_array($row["uid"]."/".$row["title"], $voted);
     addTile($row["uid"], $row["title"], $row["image"], $row["votes"], $v);
 }

@@ -9,20 +9,23 @@ if(empty($_POST["email"])){
 
 $email = $_POST["email"];
 
-$sql = "SELECT * FROM user WHERE email='$email'";
-$result = mysqli_query($conn, $sql);
-$num_rows = mysqli_num_rows($result);
-if($num_rows > 0){
-    if($row = mysqli_fetch_assoc($result)){
-        
+$sql = $conn->prepare("SELECT * FROM user WHERE email=:email");
+$sql->bindValue(":email", $email, PDO::PARAM_STR);
+$sql->execute();
+
+if($sql->rowCount() > 0){
+    if($row = $sql->fetch(PDO::FETCH_ASSOC)){
         $v = explode("-", $row["verify"])[0];
         if($v == "register"){
             header("Location: /?bad");
             exit();
         } else {
             $verify = generateRandomString(16);
-            $sql = "UPDATE `user` SET `verify` = 'passwordReset-$verify' WHERE `email` = '$email';";
-            mysqli_query($conn, $sql);
+            
+            $sql = $conn->prepare("UPDATE `user` SET `verify` = 'passwordReset-:verify' WHERE `email` = :email;");
+            $sql->bindValue(":verify", $verify, PDO::PARAM_STR);
+            $sql->bindValue(":email", $email, PDO::PARAM_STR);
+            $sql->execute();
             
             $link = "https://" . $config["domain"] . "/verify?email=$email&code=$verify";
             $subject = "Password reset at ${config['domain']}";

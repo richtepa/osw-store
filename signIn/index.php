@@ -2,8 +2,8 @@
 
 session_start();
 require "../backend/db.php";
-$user = mysqli_real_escape_string($conn, strtolower($_POST["user"]));
-$pwd = mysqli_real_escape_string($conn, $_POST["pwd"]);
+$user = strtolower(preg_replace('/[^A-Za-z0-9\-\@\.]/', '',$_POST["user"]));
+$pwd = $_POST["pwd"];
 
 //empty inputs
 if(empty($user) || empty($pwd)){
@@ -11,19 +11,17 @@ if(empty($user) || empty($pwd)){
 	exit();
 }
 
-$sql = "SELECT * FROM user WHERE uid='$user' OR email='$user'";
-$result = mysqli_query($conn, $sql);
-$num_rows = mysqli_num_rows($result);
-
+$sql = $conn->prepare("SELECT * FROM user WHERE uid=:uid OR email=:email");
+$sql->bindValue(":uid", $user, PDO::PARAM_STR);
+$sql->bindValue(":email", $user, PDO::PARAM_STR);
+$sql->execute();
 //no User
-if($num_rows < 1){
+if($sql->rowCount() < 1){
 	header("Location: /?noEntry");
 	exit();
 }
 
-if($row = mysqli_fetch_assoc($result)){
-    //echo password_hash($_POST["pwd"], PASSWORD_DEFAULT);
-    
+if($row = $sql->fetch(PDO::FETCH_ASSOC)){    
 	if(!password_verify($pwd, $row["pwd"])){
 		header("Location: /?wrongPwd");
 		exit();

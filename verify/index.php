@@ -10,17 +10,19 @@ if(empty($_GET["email"]) || empty($_GET["code"])){
 $email = $_GET["email"];
 $code = $_GET["code"];
 
-$sql = "SELECT * FROM user WHERE email='$email'";
-$result = mysqli_query($conn, $sql);
-$num_rows = mysqli_num_rows($result);
-if($num_rows > 0){
-    if($row = mysqli_fetch_assoc($result)){
+$sql = $conn->prepare("SELECT * FROM user WHERE email=:email");
+$sql->bindValue(":email", $email, PDO::PARAM_STR);
+$sql->execute();
+
+if($sql->rowCount() > 0){
+    if($row = $sql->fetch(PDO::FETCH_ASSOC)){
         $type = explode("-", $row["verify"])[0];
         $v = explode("-", $row["verify"])[1];
         if($v == $code){
             if($type == "register"){
-                $sql = "UPDATE `user` SET `verify` = '' WHERE `email` = '$email';";
-                mysqli_query($conn, $sql);
+                $sql = $conn->prepare("UPDATE `user` SET `verify` = '' WHERE `email` = :email;");
+                $sql->bindValue(":email", $email, PDO::PARAM_STR);
+                $sql->execute();
                 header("Location: /?ok");
                 exit();
             } else if($type == "passwordReset"){
@@ -33,10 +35,13 @@ if($num_rows > 0){
                     exit();
                 }
                 $pwd = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
-                $sql = "UPDATE `user` SET `verify` = '' WHERE `email` = '$email';";
-                mysqli_query($conn, $sql);
-                $sql = "UPDATE `user` SET `pwd` = '$pwd' WHERE `email` = '$email';";
-                mysqli_query($conn, $sql);
+                $sql = $conn->prepare("UPDATE `user` SET `verify` = '' WHERE `email` = :email;");
+                $sql->bindValue(":email", $email, PDO::PARAM_STR);
+                $sql->execute();
+                $sql = $conn->prepare("UPDATE `user` SET `pwd` = :pwd WHERE `email` = :email;");
+                $sql->bindValue(":pwd", $pwd, PDO::PARAM_STR);
+                $sql->bindValue(":email", $email, PDO::PARAM_STR);
+                $sql->execute();
                 header("Location: /?ok");
                 exit();
             }
