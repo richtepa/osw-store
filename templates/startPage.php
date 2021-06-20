@@ -1,3 +1,7 @@
+<div class="content">
+
+
+
 <?php
 $limit = 20;
 if(empty($_GET["page"])){
@@ -63,3 +67,5 @@ $maxPage = ceil($num_rows / $limit);
     <input type="submit" name="submit" value="Upload">
 </form>
 <?php } ?>
+    
+</div>
