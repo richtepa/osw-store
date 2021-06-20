@@ -4,12 +4,14 @@ session_start();
 
 $uid = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '',$_SESSION["uid"]));
 if(empty($uid)){
-    header("Location: /?loginNeeded");
+    //header("Location: /?loginNeeded");
+    echo 0;
 	exit();
 }
 
 if(empty($_GET["uid"]) || empty($_GET["title"])){
-    header("Location: /?fieldEmpty");
+    //header("Location: /?fieldEmpty");
+    echo 0;
 	exit();
 }
 
@@ -25,7 +27,8 @@ $sql->execute();
 
 //no User
 if($sql->rowCount() < 1){
-    header("Location: /?noUser");
+    //header("Location: /?noUser");
+    echo 0;
 	exit();
 } else {
     if($row = $sql->fetch(PDO::FETCH_ASSOC)){
@@ -52,5 +55,6 @@ if($sql->rowCount() < 1){
     }
 }
 
-header("Location: /watchface/show/$user/$title");
+//header("Location: /watchface/show/$user/$title");
+echo 1;
 exit();
