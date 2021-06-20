@@ -8,7 +8,7 @@ if(empty($uid)){
 	exit();
 }
 
-if(!isset($_POST["submit"]) || empty($_POST["title"]) || empty($_FILES["screenshot"]["name"]) || empty($_FILES["code"]["name"])){
+if(!isset($_POST["submit"]) || empty($_POST["title"]) || empty($_FILES["screenshot"]["name"]) || empty($_FILES["code"]["name"]) || empty($_FILES["header"]["name"])){
     header("Location: /?fieldEmpty");
 	exit();
 }
@@ -41,16 +41,20 @@ $screenshotLocation = $targetDir . $fileName . "." . $screenshotExtension;
 $codeExtension = pathinfo($_FILES["code"]["name"], PATHINFO_EXTENSION);
 $codeLocation = $targetDir . $fileName . "." . $codeExtension;
 
+$headerExtension = pathinfo($_FILES["header"]["name"], PATHINFO_EXTENSION);
+$headerLocation = $targetDir . $fileName . "." . $headerExtension;
+
 $allowTypes = array('jpg','png','jpeg');
-if(!in_array($screenshotExtension, $allowTypes) || $codeExtension != "cpp"){
+if(!in_array($screenshotExtension, $allowTypes) || $codeExtension != "cpp" || $headerExtension != "h"){
     header("Location: /?wrongFiletype");
 	exit();
 }
 
-if(move_uploaded_file($_FILES["screenshot"]["tmp_name"], $screenshotLocation) && move_uploaded_file($_FILES["code"]["tmp_name"], $codeLocation)){
-    $sql = $conn->prepare("INSERT into watchface (`id`, `image`, `code`, `title`, `description`, `uid`, `uploaded`, `votes`) VALUES (NULL, :s, :c, :title, :description, :uid, NOW(), 0)");
+if(move_uploaded_file($_FILES["screenshot"]["tmp_name"], $screenshotLocation) && move_uploaded_file($_FILES["code"]["tmp_name"], $codeLocation) && && move_uploaded_file($_FILES["header"]["tmp_name"], $headerLocation)){
+    $sql = $conn->prepare("INSERT into watchface (`id`, `image`, `code`, `header`, `title`, `description`, `uid`, `uploaded`, `votes`) VALUES (NULL, :s, :c, :h, :title, :description, :uid, NOW(), 0)");
     $sql->bindValue(":s", $fileName.".".$screenshotExtension, PDO::PARAM_STR);
     $sql->bindValue(":c", $fileName.".".$codeExtension, PDO::PARAM_STR);
+    $sql->bindValue(":h", $fileName.".".$headerExtension, PDO::PARAM_STR);
     $sql->bindValue(":title", $title, PDO::PARAM_STR);
     $sql->bindValue(":description", $description, PDO::PARAM_STR);
     $sql->bindValue(":uid", $uid, PDO::PARAM_STR);

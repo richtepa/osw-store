@@ -111,6 +111,10 @@
                                 <td><input type="file" accept="image/jpg,image/png, image/jpeg" name="screenshot"></td>
                             </tr>
                             <tr>
+                                <td>Header (.h)</td>
+                                <td><input type="file" accept=".h" name="header"></td>
+                            </tr>
+                            <tr>
                                 <td>Code (.cpp)</td>
                                 <td><input type="file" accept=".cpp" name="code"></td>
                             </tr>

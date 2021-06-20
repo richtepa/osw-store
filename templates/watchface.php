@@ -32,9 +32,12 @@
             <div class="galleryBox">
                 <h2>Download Watchface</h2>
                 <ol>
+                    <li><a href="/watchface/uploads/<?php echo $row["header"];?>" download>Klick to download the the header for the watchface.</a></li>
+                    <li>Move the header into the folder <code>/include/apps/watchfaces</code> and rename it.</li>
                     <li><a href="/watchface/uploads/<?php echo $row["code"];?>" download>Klick to download the watchface.</a></li>
-                    <li>Move the watchface into the folder <code>/src/include/watchfaces</code> and rename it.</li>
-                    <li>Add <code>watchFaceSwitcher->registerApp(new OswAppWatchfaceBinary());</code> into the watchface section of <code>/src/main.cpp</code>.</li>
+                    <li>Move the watchface into the folder <code>/src/apps/watchfaces</code> and rename it.</li>
+                    <li>Link the header in <code>/src/main.cpp</code>.</li>
+                    <li>Add the watchface into the watchface section of <code>/src/main.cpp</code>.</li>
                     <li>Compile, Install and Enjoy.</li>
                 </ol>
             </div>

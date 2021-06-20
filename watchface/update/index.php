@@ -51,6 +51,13 @@ if(!empty($_FILES["code"]["name"])){
         exit();
     }
 }
+if(!empty($_FILES["header"]["name"])){
+    $headerExtension = pathinfo($_FILES["header"]["name"], PATHINFO_EXTENSION);
+    if($headerExtension != "h"){
+        header("Location: /?wrongFiletype");
+        exit();
+    }
+}
 
 
 if(!empty($_FILES["screenshot"]["name"])){
@@ -73,6 +80,17 @@ if(!empty($_FILES["code"]["name"])){
         $sql->bindValue(":title", $title, PDO::PARAM_STR);
         $sql->execute();
         unlink($targetDir . $row["code"]);
+    }
+}
+if(!empty($_FILES["header"]["name"])){
+    $headerLocation = $targetDir . $fileName . "." . $headerExtension;
+    if(move_uploaded_file($_FILES["header"]["tmp_name"], $headerLocation)){
+        $sql = $conn->prepare("UPDATE `watchface` SET `header` = :f WHERE `title` = :title AND `uid` = :uid");
+        $sql->bindValue(":f", $fileName.".".$headerExtension, PDO::PARAM_STR);
+        $sql->bindValue(":uid", $uid, PDO::PARAM_STR);
+        $sql->bindValue(":title", $title, PDO::PARAM_STR);
+        $sql->execute();
+        unlink($targetDir . $row["header"]);
     }
 }
 if(!empty($_POST["description"])){

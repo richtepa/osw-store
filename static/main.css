@@ -113,6 +113,7 @@ a.invisibleLink {
 }
 
 .heart {
+    cursor: pointer;
     margin: 2vh;
     margin-left: 0px;
     height: 5vh;

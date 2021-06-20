@@ -19,7 +19,11 @@
             </div>
             <div class="galleryBox">
                 <h2>Watchface File</h2>
-                <input type="file" accept=".cpp" name="code">
+                <table>
+                    <tr><td>Header (.h)</td><td><input type="file" accept=".h" name="header"></td></tr>
+                    <tr><td>Code (.cpp)</td><td><input type="file" accept=".cpp" name="code"></td></tr>
+                </table>
+                
             </div>
             <div class="galleryBox">
                 <h2>Save Watchface</h2>
